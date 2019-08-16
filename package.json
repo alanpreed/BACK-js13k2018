@@ -1,0 +1,28 @@
+{
+  "name": "BACK-js13k2018",
+  "version": "1.0.0",
+  "description": "Entry for the 2019 js13k competition",
+  "private": true,
+  "dependencies": {
+    "kontra": "^6.2.3"
+  },
+  "devDependencies": {
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alanpreed/BACK-js13k2018.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alanpreed/BACK-js13k2018/issues"
+  },
+  "homepage": "https://github.com/alanpreed/BACK-js13k2018#readme"
+}
