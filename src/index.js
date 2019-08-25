@@ -48,6 +48,10 @@ function drawEdge(canvas, edge, position, angle, linewidth, strokeStyle) {
 
   let length = Math.sqrt(dx * dx + dy * dy);
 
+  ctx.scale(4,4);
+  ctx.translate(position.x, position.y);
+  ctx.rotate(angle);
+
   ctx.beginPath();
   ctx.moveTo(linewidth, linewidth);
   ctx.lineTo(linewidth + length, linewidth);
@@ -56,6 +60,8 @@ function drawEdge(canvas, edge, position, angle, linewidth, strokeStyle) {
   ctx.lineWidth = linewidth;
   ctx.strokeStyle =  strokeStyle;
   ctx.stroke();
+
+  ctx.resetTransform();
 };
 
 function drawPolygon(canvas, shape, position, angle, linewidth, strokeStyle, scaleY) {
@@ -77,6 +83,10 @@ function drawPolygon(canvas, shape, position, angle, linewidth, strokeStyle, sca
     maxY = Math.max(maxY, scaleY * v.y);
   }
 
+  ctx.scale(4,4);
+  ctx.translate(position.x, position.y);
+  ctx.rotate(angle);
+
   ctx.beginPath();
   for (let i = 0; i < vertices.length; ++i) {
     let v = vertices[i];
@@ -96,6 +106,8 @@ function drawPolygon(canvas, shape, position, angle, linewidth, strokeStyle, sca
   ctx.lineWidth = linewidth;
   ctx.strokeStyle = strokeStyle;
   ctx.stroke();
+
+  ctx.resetTransform();
 };
 
 function step() {
