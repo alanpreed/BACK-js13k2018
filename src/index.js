@@ -1,8 +1,8 @@
 import planck from 'planck-js'
 
-let cv = document.getElementById('js13k_canvas');
-let ctx = cv.getContext('2d');
-ctx.scale(4,4)
+// let cv = document.getElementById('js13k_canvas');
+// let ctx = cv.getContext('2d');
+// ctx.scale(4,4)
 
 var world = planck.World({
   gravity: planck.Vec2(0, -10)
@@ -37,41 +37,29 @@ for (let i = 0; i < 1; ++i) {
 }
 
 
-function drawEdge(edge) {
-  let cv = document.getElementById('js13k_canvas');
-  let ctx = cv.getContext('2d');
-
-  let lw = 1// options.lineWidth;
-  let ratio = 2;//options.ratio;
+function drawEdge(canvas, edge, position, angle, linewidth, strokeStyle) {
+  let ctx = canvas.getContext('2d');
 
   let v1 = edge.m_shape.m_vertex1;
   let v2 = edge.m_shape.m_vertex2;
-console.log("test")
+3
   let dx = v2.x - v1.x;
   let dy = v2.y - v1.y;
 
   let length = Math.sqrt(dx * dx + dy * dy);
 
-  //ctx.scale(ratio, ratio);
   ctx.beginPath();
-  ctx.moveTo(lw, lw);
-  ctx.lineTo(lw + length, lw);
+  ctx.moveTo(linewidth, linewidth);
+  ctx.lineTo(linewidth + length, linewidth);
 
   ctx.lineCap = 'round';
-  ctx.lineWidth = lw;//options.lineWidth;
-  ctx.strokeStyle =  "#FF0000";//options.strokeStyle;
+  ctx.lineWidth = linewidth;
+  ctx.strokeStyle =  strokeStyle;
   ctx.stroke();
 };
 
-function drawPolygon(shape) {
-  let cv = document.getElementById('js13k_canvas');
-  let ctx = cv.getContext('2d');
-  let lw = 1;//options.lineWidth;
-  let strokeStyle = "#000000";
-  let ratio = 2;//options.ratio;
-  let scaleX = 1;
-  let scaleY = 1;
-
+function drawPolygon(canvas, shape, position, angle, linewidth, strokeStyle, scaleY) {
+  let ctx = canvas.getContext('2d');
   let vertices = shape.m_vertices;
 
   if (!vertices.length) {
@@ -89,12 +77,11 @@ function drawPolygon(shape) {
     maxY = Math.max(maxY, scaleY * v.y);
   }
 
-  //ctx.scale(ratio, ratio);
   ctx.beginPath();
   for (let i = 0; i < vertices.length; ++i) {
     let v = vertices[i];
-    let x = v.x - minX + lw;
-    let y = scaleY * v.y - minY + lw;
+    let x = v.x - minX + linewidth;
+    let y = scaleY * v.y - minY + linewidth;
     if (i == 0)
       ctx.moveTo(x, y);
     else
@@ -105,14 +92,8 @@ function drawPolygon(shape) {
     ctx.closePath();
   }
 
-  // if (options.fillStyle) {
-  //   ctx.fillStyle = '';//options.fillStyle;
-  //   ctx.fill();
-  //   ctx.closePath();
-  // }
-
   ctx.lineCap = 'round';
-  ctx.lineWidth = lw;//options.lineWidth;
+  ctx.lineWidth = linewidth;
   ctx.strokeStyle = strokeStyle;
   ctx.stroke();
 };
@@ -121,21 +102,25 @@ function step() {
   // in each frame call world.step(timeStep) with fixed timeStep
   world.step(1 / 60);
 
-  // iterate over bodies and fixtures
+  let canvas = document.getElementById('js13k_canvas');
+
   for (let body = world.getBodyList(); body; body = body.getNext()) {
     for (let fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
       // draw or update fixture
       
       let type = fixture.getType();
       let shape = fixture.getShape();
+      let position = body.getPosition();
+      let rotation = body.getAngle();
+
       if (type == 'circle') {
         //f.ui = viewer.drawCircle(shape, options);
       }
       if (type == 'edge') {
-        drawEdge(fixture);
+        drawEdge(canvas, fixture, position, rotation, 2, "#FF0000");
       }
       if (type == 'polygon') {
-        drawPolygon(shape);
+        drawPolygon(canvas, shape, position, rotation, 2, "#000000", -1);
       }
       if (type == 'chain') {
         //f.ui = viewer.drawChain(shape, options);
