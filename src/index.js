@@ -21,7 +21,7 @@ var shape = planck.Box(0.6, 0.125);
 
 var y = 25.0;
 var prevBody = ground;
-for (let i = 0; i < 1; ++i) {
+for (let i = 0; i < 3; ++i) {
   var body = world.createDynamicBody(planck.Vec2(0.5 + i, y));
   body.createFixture(shape, {
     density: 20.0,
@@ -37,9 +37,7 @@ for (let i = 0; i < 1; ++i) {
 }
 
 
-function drawEdge(canvas, edge, position, angle, linewidth, strokeStyle) {
-  let ctx = canvas.getContext('2d');
-
+function drawEdge(ctx, edge, position, angle, linewidth, strokeStyle) {
   let v1 = edge.m_shape.m_vertex1;
   let v2 = edge.m_shape.m_vertex2;
 3
@@ -48,9 +46,10 @@ function drawEdge(canvas, edge, position, angle, linewidth, strokeStyle) {
 
   let length = Math.sqrt(dx * dx + dy * dy);
 
-  ctx.scale(4,4);
+  ctx.save();
   ctx.translate(position.x, position.y);
   ctx.rotate(angle);
+  ctx.scale(4,4);
 
   ctx.beginPath();
   ctx.moveTo(linewidth, linewidth);
@@ -61,11 +60,10 @@ function drawEdge(canvas, edge, position, angle, linewidth, strokeStyle) {
   ctx.strokeStyle =  strokeStyle;
   ctx.stroke();
 
-  ctx.resetTransform();
+  ctx.restore();
 };
 
-function drawPolygon(canvas, shape, position, angle, linewidth, strokeStyle, scaleY) {
-  let ctx = canvas.getContext('2d');
+function drawPolygon(ctx, shape, position, angle, linewidth, strokeStyle, scaleY) {
   let vertices = shape.m_vertices;
 
   if (!vertices.length) {
@@ -83,9 +81,10 @@ function drawPolygon(canvas, shape, position, angle, linewidth, strokeStyle, sca
     maxY = Math.max(maxY, scaleY * v.y);
   }
 
-  ctx.scale(4,4);
+  ctx.save();
   ctx.translate(position.x, position.y);
   ctx.rotate(angle);
+  ctx.scale(4,4);
 
   ctx.beginPath();
   for (let i = 0; i < vertices.length; ++i) {
@@ -107,7 +106,7 @@ function drawPolygon(canvas, shape, position, angle, linewidth, strokeStyle, sca
   ctx.strokeStyle = strokeStyle;
   ctx.stroke();
 
-  ctx.resetTransform();
+  ctx.restore();
 };
 
 function step() {
@@ -115,6 +114,15 @@ function step() {
   world.step(1 / 60);
 
   let canvas = document.getElementById('js13k_canvas');
+  let context = canvas.getContext('2d');
+  context.save();
+
+  // Use the identity matrix while clearing the canvas
+  context.setTransform(1, 0, 0, 1, 0, 0);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Restore the transform
+  context.restore();
 
   for (let body = world.getBodyList(); body; body = body.getNext()) {
     for (let fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
@@ -129,10 +137,10 @@ function step() {
         //f.ui = viewer.drawCircle(shape, options);
       }
       if (type == 'edge') {
-        drawEdge(canvas, fixture, position, rotation, 2, "#FF0000");
+        drawEdge(context, fixture, position, rotation, 2, "#FF0000");
       }
       if (type == 'polygon') {
-        drawPolygon(canvas, shape, position, rotation, 2, "#000000", -1);
+        drawPolygon(context, shape, position, rotation, 2, "#000000", -1);
       }
       if (type == 'chain') {
         //f.ui = viewer.drawChain(shape, options);
