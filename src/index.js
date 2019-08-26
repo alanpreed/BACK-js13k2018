@@ -5,7 +5,7 @@ let ctx = cv.getContext('2d');
 
 // Flip y axis, move 0,0 to centre bottom, increase size
 ctx.translate(cv.width/2, cv.height);
-ctx.scale(4,-4);
+ctx.scale(15,-15);
 
 var world = planck.World({
   gravity: planck.Vec2(0, -10)
@@ -69,6 +69,7 @@ function drawPolygon(ctx, shape, position, angle, linewidth, strokeStyle, scaleY
   ctx.save();
   ctx.translate(position.x, position.y);
   ctx.rotate(angle);
+  ctx.beginPath();
 
   for (let i = 0; i < vertices.length; ++i) {
     let v = vertices[i];
@@ -81,6 +82,7 @@ function drawPolygon(ctx, shape, position, angle, linewidth, strokeStyle, scaleY
   ctx.lineCap = 'round';
   ctx.lineWidth = linewidth;
   ctx.strokeStyle = strokeStyle;
+  ctx.closePath();
   ctx.stroke();
   ctx.restore();
 };
@@ -110,10 +112,10 @@ function step() {
         //f.ui = viewer.drawCircle(shape, options);
       }
       if (type == 'edge') {
-        drawEdge(context, fixture, position, rotation, 2, "#FF0000");
+        drawEdge(context, fixture, position, rotation, 0.1, "#FF0000");
       }
       if (type == 'polygon') {
-        drawPolygon(context, shape, position, rotation, 2, "#000000",  1);
+        drawPolygon(context, shape, position, rotation, 0.05, "#000000",  1);
       }
       if (type == 'chain') {
         //f.ui = viewer.drawChain(shape, options);
