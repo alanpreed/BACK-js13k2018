@@ -1,5 +1,5 @@
 export class Body {
-  constructor(x, y, originX, originY, width, height, rotation, colour, drag) {
+  constructor(x, y, originX, originY, width, height, rotation, colour, drag, mass) {
     this.x = x;
     this.y = y;
     this.anchor = {x: originX, y: originY};
@@ -13,7 +13,8 @@ export class Body {
     this.ddy = 0;
 
     this.drag = drag;
-    
+    this.mass = mass;
+
     this.rotationSpeed = 0;
   }
 
@@ -29,6 +30,15 @@ export class Body {
 
     this.ddx = 0;
     this.ddy = 0;
+  }
+
+  applyForce(relativeAngle, magnitude) {
+    const forceX = magnitude * Math.sin(this.rotation + relativeAngle);
+    const forceY = -magnitude * Math.cos(this.rotation + relativeAngle);
+
+    this.ddx += forceX / this.mass;
+    this.ddy += forceY / this.mass;
+    console.log("ddx: " + this.ddx + " ddy: " + this.ddy);
   }
 
   calculateDrag(dragCoeff) {

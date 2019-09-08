@@ -16,13 +16,13 @@ const BODY_ROT_SPEED = Math.PI/180;
 
 const MAX_LEG_ANGLE = Math.PI/4;
 
-const MASS = 0.01
+const SWIMMER_MASS = 100;
 
 export class Swimmer {
   constructor(x, y, waterHeight) {
     this.waterHeight = waterHeight;
 
-    this.body = new Body(x, y, 0.5, 0.5, BODY_WIDTH, BODY_LENGTH, Math.PI/4, 'red', 0.1);
+    this.body = new Body(x, y, 0.5, 0.5, BODY_WIDTH, BODY_LENGTH, Math.PI/4, 'red', 0.09, SWIMMER_MASS);
     this.legLeft = new Limb(0, 0.9, 0.5, 0.1, LEG_WIDTH, LEG_LENGTH, Math.PI/4, 'green', this.body);
     this.legRight = new Limb(0, 0.9, 0.5, 0.1, LEG_WIDTH, LEG_LENGTH, Math.PI/4, 'blue', this.body);
     this.armLeft = new Limb(0, -0.4, 0.5, 0.1, ARM_WIDTH, ARM_LENGTH, Math.PI/4, 'blue', this.body);
@@ -83,14 +83,8 @@ export class Swimmer {
 
 
     if(keyPressed('u')) {
-      this.body.ddx = MASS * Math.sin(this.body.rotation);
-      this.body.ddy = MASS * -Math.cos(this.body.rotation);
+      this.body.applyForce(Math.PI/4, 5);
     }
-    else {
-      this.body.ddx = 0;
-      this.body.ddy = 0;
-    }
-
 
    
 
