@@ -38,7 +38,7 @@ export class Body {
 
     this.ddx += forceX / this.mass;
     this.ddy += forceY / this.mass;
-    console.log("ddx: " + this.ddx + " ddy: " + this.ddy);
+    //console.log("ddx: " + this.ddx + " ddy: " + this.ddy);
   }
 
   calculateDrag(dragCoeff) {

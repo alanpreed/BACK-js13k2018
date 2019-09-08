@@ -57,7 +57,7 @@ export class Swimmer {
 
     if(keyPressed('p')){
       this.armLeft.rotationSpeed = ARM_ROT_SPEED;
-      this.armForce = true;
+      armForce = true;
     }
     else {
       this.armLeft.rotationSpeed = 0;
@@ -65,13 +65,13 @@ export class Swimmer {
     
     if(keyPressed('q')){
       this.armRight.rotationSpeed = ARM_ROT_SPEED;
-      this.armForce = true;
+      armForce = true;
     }
     else {
       this.armRight.rotationSpeed = 0;
     }
 
-    if (legForce && this.body.rotation < Math.PI/2 ) {
+    if (legForce && this.body.rotation < 6 * Math.PI/16 ) {
       this.body.rotationSpeed = BODY_ROT_SPEED;
     }
     else if (this.body.rotation > 0) {
@@ -82,10 +82,18 @@ export class Swimmer {
     }
 
 
-    if(keyPressed('u')) {
-      this.body.applyForce(Math.PI/4, 5);
+    if (legForce){//} && this.body.y < this.waterHeight) {
+        console.log("rising");
+      this.body.applyForce(0, 6);
     }
 
+    if (armForce) {
+      console.log("arms");
+      this.body.applyForce(0, 8);
+    }
+
+    //gravity
+    this.body.applyForce(-this.body.rotation, -5);
    
 
     this.body.update();
