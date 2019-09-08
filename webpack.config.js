@@ -11,6 +11,21 @@ module.exports = {
     inline: true,
     hot: true,
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.svg/,
+        use: {
+          loader: 'svg-url-loader',
+          options: {}
+        }
+      }
+    ],
+  },
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist')
