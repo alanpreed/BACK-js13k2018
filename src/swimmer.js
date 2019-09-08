@@ -10,7 +10,9 @@ const LEG_LENGTH = 100;
 const LEG_WIDTH = 15;
 
 const ARM_ROT_SPEED = Math.PI/100;
-const LEG_ROT_SPEED = Math.PI/130;
+const LEG_ROT_SPEED = Math.PI/90;
+
+const BODY_ROT_SPEED = Math.PI/150;
 
 const MAX_LEG_ANGLE = Math.PI/4;
 
@@ -24,14 +26,19 @@ export class Swimmer {
     this.legRight = new Limb(0, 0.9, 0.5, 0.1, LEG_WIDTH, LEG_LENGTH, Math.PI/4, 'blue', this.body);
     this.armLeft = new Limb(0, -0.4, 0.5, 0.1, ARM_WIDTH, ARM_LENGTH, Math.PI/4, 'blue', this.body);
     this.armRight = new Limb(0, -0.4, 0.5, 0.1, ARM_WIDTH, ARM_LENGTH, -Math.PI/4, 'cyan', this.body);
+
+    //this.body.ddy = 0.005;
   }
 
   update() {
-    if(keyPressed('a') && (this.legRight.rotation - this.body.rotation) < MAX_LEG_ANGLE) {
+    let legForce = false;
+
+    if(keyPressed('s') && (this.legRight.rotation - this.body.rotation) < MAX_LEG_ANGLE) {
       this.legRight.rotationSpeed = LEG_ROT_SPEED;
     }
-    else if (keyPressed('z') && (this.legRight.rotation - this.body.rotation) > -MAX_LEG_ANGLE) {
+    else if (keyPressed('x') && (this.legRight.rotation - this.body.rotation) > -MAX_LEG_ANGLE) {
       this.legRight.rotationSpeed = -LEG_ROT_SPEED;
+      legForce = true;
     }
     else {
       this.legRight.rotationSpeed = 0;
@@ -42,10 +49,38 @@ export class Swimmer {
     }
     else if (keyPressed('m') && (this.legLeft.rotation - this.body.rotation) > -MAX_LEG_ANGLE) {
       this.legLeft.rotationSpeed = -LEG_ROT_SPEED;
+      legForce = true;
     }
     else {
       this.legLeft.rotationSpeed = 0;
     }
+
+    if(keyPressed('p')){
+      this.armLeft.rotationSpeed = ARM_ROT_SPEED;
+    }
+    else {
+      this.armLeft.rotationSpeed = 0;
+    }    
+    
+    if(keyPressed('q')){
+      this.armRight.rotationSpeed = ARM_ROT_SPEED;
+    }
+    else {
+      this.armRight.rotationSpeed = 0;
+    }
+
+    if (legForce && this.body.rotation < Math.PI/2 ) {
+      this.body.rotationSpeed = BODY_ROT_SPEED;
+    }
+    else if (this.body.rotation > 0) {
+      this.body.rotationSpeed = -BODY_ROT_SPEED;
+    }
+    else {
+      this.body.rotationSpeed = 0;
+    }
+
+
+   
 
     this.body.update();
     this.legLeft.update(this.body);
