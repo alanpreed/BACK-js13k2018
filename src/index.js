@@ -3,7 +3,7 @@ import {Swimmer} from "./swimmer"
 
 let { canvas } = init();
 
-let swimmer = new Swimmer(400, 100);
+let swimmer = new Swimmer(400, 750);
 
 let loop = GameLoop({
   update: function () {
