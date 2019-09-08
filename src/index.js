@@ -6,7 +6,7 @@ let { canvas } = init();
 
 initKeys();
 
-let swimmer = new Swimmer(400, 500);
+let swimmer = new Swimmer(400, 500, 400);
 
 let loop = GameLoop({
   update: function () {
