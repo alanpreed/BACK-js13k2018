@@ -4,8 +4,7 @@
   "description": "Entry for the 2019 js13k competition",
   "private": true,
   "dependencies": {
-    "kontra": "^6.2.3",
-    "planck-js": "^0.3.9"
+    "kontra": "^6.2.3"
   },
   "devDependencies": {
     "webpack": "^4.39.2",
