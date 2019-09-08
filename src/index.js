@@ -1,8 +1,8 @@
-import kontra from 'kontra'
+import { init, Sprite, GameLoop } from 'kontra'
 
-let { canvas } = kontra.init();
+let { canvas } = init();
 
-let sprite = kontra.Sprite({
+let sprite = Sprite({
   x: 100,        // starting x,y position of the sprite
   y: 80,
   color: 'red',  // fill color of the sprite rectangle
@@ -11,8 +11,8 @@ let sprite = kontra.Sprite({
   dx: 2          // move the sprite 2px to the right every frame
 });
 
-let loop = kontra.GameLoop({  // create the main game loop
-  update: function() { // update the game state
+let loop = GameLoop({  // create the main game loop
+  update: function () { // update the game state
     sprite.update();
 
     // wrap the sprites position when it reaches
@@ -21,7 +21,7 @@ let loop = kontra.GameLoop({  // create the main game loop
       sprite.x = -sprite.width;
     }
   },
-  render: function() { // render the game state
+  render: function () { // render the game state
     sprite.render();
   }
 });
